@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #! Son apps instaladas por nosotros
     'posts',
+    'users'
 ]
 
 MIDDLEWARE = [
