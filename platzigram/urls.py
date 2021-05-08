@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib import admin  # ? Importa el admin
+from django.conf.urls.static import static  # ? Para tere url estaticos
+from django.conf import settings  # ? Importando settings
 from platzigram import views as localViews
 from posts import views as postsViews
 
@@ -25,4 +27,4 @@ urlpatterns = [
     path('welcome/<str:name>/<int:age>/', localViews.welcome),
     path('posts/', postsViews.list_posts),
     path('admin/', admin.site.urls)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

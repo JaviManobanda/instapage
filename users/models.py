@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib import admin
 from django.contrib.auth.models import User
+from django.conf import settings
 # Create your models here.
 
 
@@ -15,7 +17,7 @@ class Profile(models.Model):
     biography = models.TextField(blank=True)
     phone_number = models.CharField(max_length=20, blank=True)
 
-    picture = models.ImageField(
+    pictureUser = models.ImageField(
         upload_to='users/pictures', blank=True, null=True)
 
     created = models.DateTimeField(auto_now_add=True)
