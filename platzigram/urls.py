@@ -20,11 +20,16 @@ from django.conf.urls.static import static  # ? Para tere url estaticos
 from django.conf import settings  # ? Importando settings
 from platzigram import views as localViews
 from posts import views as postsViews
+from users import views as users_Views
 
 urlpatterns = [
-    path('hello-world/', localViews.hello_world),
-    path('sort_integers/', localViews.sort_integers),
-    path('welcome/<str:name>/<int:age>/', localViews.welcome),
-    path('posts/', postsViews.list_posts),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('hello-world/', localViews.hello_world, name='hello_world'),
+    path('sort_integers/', localViews.sort_integers, name='sort'),
+    path('welcome/<str:name>/<int:age>/', localViews.welcome, name='hi'),
+    path('posts/', postsViews.list_posts, name='feed'),
+    path('user/login/', users_Views.login_view, name='login'),
+    path('user/logout/', users_Views.logout_view, name='logout'),
+    path('user/signup/', users_Views.signup_view, name='signup'),
+    path('user/me/profile/', users_Views.update_profile, name='update_profile')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

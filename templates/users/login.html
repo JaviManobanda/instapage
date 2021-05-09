@@ -1,0 +1,53 @@
+{% extends "users/base.html" %}
+{% block head_content %}
+<title>Platzigram sign in</title>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/users/login.css' %}">
+{% endblock head_content %}
+{% block container %}
+{% if error %}
+    <p class="alert alert-danger">
+        {{error}}
+    </p>
+{% endif %}
+
+<div class="container justify-content-center">
+    <form class="justify-content-center" method="POST" action = "{% url "login" %}">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col">
+                <label for="username" class="form-label">
+                    <span>User Name</span>
+                    <input class="form-control" id="username" type="text"
+                    placeholder="UserName"
+                    name="username" required>
+                </label>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="password" class="form-label">
+                    <span>Password</span>
+                    <input class="form-control" id="password"
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    required>
+                </label>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col">
+                <input class="btn btn-primary btn-block" type="submit" value="Sign In!">
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+{% endblock container %}

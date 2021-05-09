@@ -1,0 +1,104 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block head_content %}
+<title>Platzigram sign up</title>
+<link rel="stylesheet" href="{% static 'css/users/login.css' %}">
+{% endblock head_content %} {% block container %}
+{% if error %}
+    <p class="alert alert-danger">
+        {{error}}
+    </p>
+{% endif %}
+<div class="container justify-content-center">
+    <form class="justify-content-center" method="POST" action = "{% url "signup" %}">
+        {% csrf_token %}
+    
+        <div class="row">
+            <div class="col">
+                <label for="username" class="form-label">
+                    <span>User Name</span>
+                    <input class="form-control" id="username" type="text"
+                    placeholder="UserName"
+                    name="username" required>
+                </label>
+            </div>
+    
+        </div>
+    
+        <div class="row">
+            <div class="col">
+                <label for="password" class="form-label">
+                    <span>Password</span>
+                    <input class="form-control" id="password"
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    required>
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="password_confirmation" class="form-label">
+                    <span>Password confirmation</span>
+                    <input class="form-control" id="password_confirmation"
+                    type="password"
+                    placeholder="Password"
+                    name="password_confi"
+                    required>
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="first_name" class="form-label">
+                    <span>First name</span>
+                    <input class="form-control" id="first_name"
+                    type="text"
+                    placeholder="First name"
+                    name="firstname"
+                    autocomplete="name"
+                    required>
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="last_name" class="form-label">
+                    <span>Last name</span>
+                    <input class="form-control" id="last_name"
+                    type="text"
+                    placeholder="last name"
+                    name="lastname"
+                    autocomplete="family-name"
+                    required>
+                </label>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <label for="email" class="form-label">
+                    <span>Email</span>
+                    <input class="form-control" id="email"
+                    type="email"
+                    placeholder="email@mail.com"
+                    name="email"
+                    autocomplete="email"
+                    required>
+                </label>
+            </div>
+        </div>
+    
+        <div class="row mt-4">
+            <div class="col">
+                <input class="btn btn-primary btn-block" type="submit" value="Register">
+            </div>
+        </div>
+    
+    </form>
+{% endblock container %}
