@@ -13,7 +13,7 @@ class ProfileCompletionMiddleware:
 
     def __call__(self, request):
         if not request.user.is_anonymous:
-
+            # ? en el caso de que no tenga el usuario un perfil se crea uno
             try:
                 profile = request.user.profile
             except:
@@ -21,6 +21,7 @@ class ProfileCompletionMiddleware:
                 profile.save()
 
             if not profile.pictureUser or not profile.biography:
+                # ? verifica que el path sea diferente a update_profile y logout
                 if request.path not in [reverse('update_profile'), reverse('logout')]:
                     return redirect('update_profile')
 
