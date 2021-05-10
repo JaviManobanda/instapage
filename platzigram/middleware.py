@@ -19,11 +19,11 @@ class ProfileCompletionMiddleware:
             except:
                 profile = Profile.objects.create(user=request.user)
                 profile.save()
-
-            if not profile.pictureUser or not profile.biography:
-                # ? verifica que el path sea diferente a update_profile y logout
-                if request.path not in [reverse('update_profile'), reverse('logout')]:
-                    return redirect('update_profile')
+            if not request.user.is_staff:
+                if not profile.pictureUser or not profile.biography:
+                    # ? verifica que el path sea diferente a update_profile y logout
+                    if request.path not in [reverse('update_profile'), reverse('logout')]:
+                        return redirect('update_profile')
 
         response = self.get_response(request)
         return response
