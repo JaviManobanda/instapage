@@ -8,6 +8,7 @@ from users.forms import ProfileForm
 # Create your views here.
 
 
+@login_required
 def update_profile(request):
     profile = request.user.profile
 
