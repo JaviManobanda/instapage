@@ -4,8 +4,40 @@ from django.contrib.auth import (authenticate, login, logout)
 from django.contrib.auth.models import User
 from users.models import Profile
 from django.db.utils import IntegrityError
-from users.forms import ProfileForm
+from users.forms import ProfileForm, SignupForm
+from django.views.generic import DetailView
+from django.urls import reverse
+from posts.models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
+
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    """Vista para renderizar detalles de un usuario
+
+    Args:
+        DetailView (hernecia): Hereda de DatailView
+        Return: renderia una vista
+    """
+    queryset = User.objects.all()
+    slug_field = 'username'  # ? <slug_field> variable unica para encontrar un usuario
+    # ? <slug_url_kwarg > toma de la variable de la url debe tener el mismo nombre
+    slug_url_kwarg = 'username'
+    template_name = 'users/detail.html'
+
+    # ? defino el nombre del contexto
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        """añade los posts del usuario al contexto
+
+        Returns:
+            [type]: [description]
+        """
+        context = super().get_context_data(**kwargs)
+        user = self.get_object()
+        context['posts'] = Post.objects.filter(user=user).order_by('-created')
+        return context
 
 
 @login_required
@@ -22,7 +54,9 @@ def update_profile(request):
             profile.phone_number = data['phone_number']
             profile.pictureUser = data['picture']
             profile.save()
-            return redirect('update_profile')
+            url = reverse('users:detail', kwargs={
+                          'username': request.user.username})
+            return redirect(url)
     else:
         form = ProfileForm()
 
@@ -39,14 +73,13 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        print(username, password)
 
         user = authenticate(request, username=username,
                             password=password)
 
         if user:
             login(request, user)
-            return redirect('feed')
+            return redirect('posts:feed')
         else:
             return render(request, 'users/login.html', {'error': 'Invalid username and password'})
 
@@ -56,32 +89,19 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('users:login')
 
 
 def signup_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confi = request.POST['password_confi']
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('users:login')
+    else:
+        form = SignupForm()
 
-        if password != password_confi:
-            return render(request, 'users/signup.html',
-                          {'error': 'Password confirmation does not match'})
-        else:
-            try:
-                user = User.objects.create_user(
-                    username=username, password=password)
-            except IntegrityError:
-                return render(request, 'users/signup.html',
-                              {'error': 'Username is already in use'})
-
-            user.first_name = request.POST['firstname']
-            user.last_name = request.POST['lastname']
-            user.email = request.POST['email']
-            user.save()
-            profile = Profile(user=user)
-            profile.save()
-            return redirect('login')
-
-    return render(request, 'users/signup.html')
+    return render(request, 'users/signup.html',
+                  {
+                      'form': form
+                  })

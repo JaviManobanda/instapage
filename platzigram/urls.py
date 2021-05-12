@@ -14,23 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib import admin  # ? Importa el admin
 from django.conf.urls.static import static  # ? Para tere url estaticos
 from django.conf import settings  # ? Importando settings
-from platzigram import views as localViews
-from posts import views as postsViews
+
 from users import views as users_Views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello-world/', localViews.hello_world, name='hello_world'),
-    path('sort_integers/', localViews.sort_integers, name='sort'),
-    path('welcome/<str:name>/<int:age>/', localViews.welcome, name='hi'),
-    path('', postsViews.list_posts, name='feed'),
-    path('posts/new/', postsViews.create_post, name='add_post'),
-    path('user/login/', users_Views.login_view, name='login'),
-    path('user/logout/', users_Views.logout_view, name='logout'),
-    path('user/signup/', users_Views.signup_view, name='signup'),
-    path('user/me/profile/', users_Views.update_profile, name='update_profile')
+
+    path('', include(('posts.urls', 'posts'), namespace='posts')),
+
+    path('', include(('users.urls', 'users'), namespace='users'))
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

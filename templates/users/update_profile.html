@@ -7,7 +7,7 @@
     <div class="col-6 p-4" id="profile-box">
       <form
         method="POST"
-        action="{%url 'update_profile'%}"
+        action="{%url 'users:update_profile'%}"
         enctype="multipart/form-data"
       >
         {% csrf_token %}
@@ -61,7 +61,7 @@
         <div class="form-group">
           <label>Biography</label>
           <textarea
-            class="form-control {% if form.biography.errors%} is-invalid {%endif%}"
+            class="form-control {%if form.biography.errors%}is-invalid{%endif%}"
             name="biography"
           >
 {% if form.errors %}{{form.biography.value}}{%else%}{{ profile.biography }}{% endif %}
@@ -74,7 +74,9 @@
         <div class="form-group">
           <label>Phone number</label>
           <input
-            class="form-control {%if form.phone_number.errors%} is-invalid {%endif%}"
+            class="
+              form-control{%if form.phone_number.errors%}is-invalid{%endif%}
+            "
             type="text"
             name="phone_number"
             placeholder="Phone number"
