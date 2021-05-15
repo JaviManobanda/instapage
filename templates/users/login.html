@@ -5,9 +5,9 @@
 <link rel="stylesheet" href="{% static 'css/users/login.css' %}">
 {% endblock head_content %}
 {% block container %}
-{% if error %}
+{% if form.errors %}
     <p class="alert alert-danger">
-        {{error}}
+        Your username and password didn't match. Please try
     </p>
 {% endif %}
 

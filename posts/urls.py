@@ -11,8 +11,15 @@ urlpatterns = [
 
     path(
         route='posts/new/',
-        view=views.create_post,
+        view=views.CreatePostView.as_view(),
         name='add_post'
     ),
+
+    path(
+        route='posts/<int:pk>/',
+        view=views.PostDatailView.as_view(),
+        name='detail'
+    ),
+
 
 ]
